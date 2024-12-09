@@ -3,8 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { OAuthUserDto } from '../dto/oauth-user.dto';
 import { RegisterDto } from '../dto/register.dto';
 import { UsersService } from 'src/users/services/users.service';
-import { ConfigService } from '@nestjs/config';
-import { google } from 'googleapis';
+import axios from 'axios';
 
 @Injectable()
 export class AuthService {
@@ -34,7 +33,7 @@ export class AuthService {
   }
 
   return user;
-}
+  }
 
   async login(user: any) {
     const payload = { email: user.email, sub: user.id };

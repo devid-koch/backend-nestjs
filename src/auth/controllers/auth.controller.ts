@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Query, UseGuards, Request, UnauthorizedException } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, UseGuards, Req, Request, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { AuthGuard } from '@nestjs/passport';
@@ -38,5 +38,20 @@ export class AuthController {
   @Post('profile')
   async getProfile(@Request() req) {
     return req.user;
+  }
+
+  @Get('linkedin')
+  @UseGuards(AuthGuard('linkedin'))
+  async linkedinLogin() {
+    // This will redirect to LinkedIn's login page
+  }
+
+  @Get('linkedin/callback')
+  @UseGuards(AuthGuard('linkedin'))
+  async linkedinLoginCallback(@Req() req: any): Promise<string> {
+    // LinkedIn redirects here after login
+    const user = req.user;
+    console.log('LinkedIn User:', user); // Log the user details
+    return `Welcome, ${user.name}!`; // Send a response to the user
   }
 }
